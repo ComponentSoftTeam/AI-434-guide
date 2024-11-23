@@ -1,0 +1,119 @@
+/* Base styles */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+h1, h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 50px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Code container styles */
+.code-container {
+    position: relative;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 10px 5px; /* Reduced padding */
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.code-container code {
+    font-family: Consolas, monospace;
+    color: #333;
+    display: block;
+    white-space: pre-wrap;
+    font-size: 0.9em; /* Smaller font size */
+    line-height: 1.4;
+    padding: 5px;
+}
+
+/* Copy button styles */
+.copy-button {
+    position: absolute;
+    top: 5px; /* Adjusted for smaller size */
+    right: 5px;
+    padding: 4px 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px; /* Smaller button font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.copy-button:hover {
+    background-color: #0056b3;
+}
+
+.copy-button:active {
+    background-color: #004494;
+}
+
+/* List styles */
+ol {
+    margin-left: 20px;
+    padding-left: 10px;
+}
+
+ol li {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: disc;
+    margin-left: 40px;
+    padding-left: 10px;
+}
+
+ul li {
+    margin-bottom: 5px;
+}
+
+/* Parameter label styling */
+.parameter {
+    font-weight: bold;
+    color: #555;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .code-container {
+        padding: 8px;
+    }
+
+    .copy-button {
+        top: 5px;
+        right: 5px;
+        padding: 3px 6px;
+        font-size: 10px;
+    }
+}

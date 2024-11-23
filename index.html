@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-151 Environment Guide</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <script>
+        let addr = new URL(window.location.href);
+        let port = addr.searchParams.get("port") ?? "&lt;PORT&gt;";
+        let domain = addr.searchParams.get("domain") ?? "&lt;DOMAIN&gt;";
+        let codeium_pass = addr.searchParams.get("codeium_pass") ?? "&lt;CODEIUM PASSWORD&gt;";
+        let codeium_email = addr.searchParams.get("codeium_email") ?? "&lt;CODEIUM EMAIL&gt;";
+        let guacamole_name = addr.searchParams.get("guacamole_name") ?? "&lt;REMOTE LAB USERNAME&gt;";
+        let pass = addr.searchParams.get("pass") ?? "&lt;PASSWORD&gt;";
+
+
+        function copyToClipboard(elementID) {
+            const code = document.getElementById(elementID).innerText;
+            navigator.clipboard.writeText(code);
+        }
+    </script>
+
+    <h1>AI-151 Environment Guide</h1>
+    <p>This tutorial will show you how to set up your environment and Codeium credentials. You have two options to use our environment:</p>
+    <ul>
+        <li>
+            <p><a href="#vscode">VSCode Remote Access (SSH)</a>: You can connect to our environment via SSH, and use your own laptop that has VSCode installed. This is a more comfortable option, because you can use your own setup and keyboard shortcuts.</p>
+        </li>
+        <li>
+            <p><a href="#lab">Remote Lab Environment (Guacamole)</a>: You can also use the Guacamole interface. You are working on the same VM as the SSH option, but through a web interface.</p>
+        </li>
+    </ul>
+    
+    <h2 id="vscode">1. VSCode Remote Access (SSH)</h2>
+    <p>This section shows you how to access our environment and log in to Codeium using VSCode Remote Access (SSH).</p>
+
+    <h3>Adding your public key to the VM</h3>
+        <p>You can add your public SSH key to our VM, so you will not have to input your password every time you open a new module in VSCode.</p>
+        <p><b>If you do not have a public key with the default name</b></p>
+        <p>You can create one and set it up with running this <b>on your machine</b>:</p>
+        <div class="code-container">
+            <button class="copy-button" onclick="copyToClipboard('ssh-keygen')">Copy</button>
+            <code id="ssh-keygen">ssh-keygen -t rsa -b 4096</code>
+        </div>
+
+        <p> After you are done creating (or already have) an SSH key, you will need to run the following command <b>on your machine</b>:</p>
+        <ul>
+            <li>
+                <p><b>Windows:</b></p>
+                <p>Run this in <b>Powershell</b>.</p>
+                <div class="code-container">
+                    <button class="copy-button" onclick="copyToClipboard('windows-ssh-copy')">Copy</button>
+                    <code id="windows-ssh-copy">type $env:USERPROFILE\.ssh\id_rsa.pub | ssh rconsole@<script>document.write(domain);</script> -p <script>document.write(port);</script> "cat >> ~/.ssh/authorized_keys"</code>
+                </div>
+            </li>
+            <li>
+                <p><b>Linux and macOS:</b></p>
+                <p>Make sure that you run this on your own machine.</p>
+                <div class="code-container">
+                    <button class="copy-button" onclick="copyToClipboard('linux-mac-ssh-copy')">Copy</button>
+                    <code id="linux-mac-ssh-copy">ssh-copy-id -p <script>document.write(port);</script> rconsole@<script>document.write(domain);</script></code>
+                </div>
+            </li>
+        </ul>
+        <p>You will need to enter your password: <b><script>document.write(pass)</script></b></p>
+    </ol>
+
+    <p><b>You will need to do the following steps to connect to the environment and log in to Codeium:</b></p>
+    <ol>
+        <li>
+            <p>Open VSCode with a terminal command that also sets up the SSH connection:</p>
+            <p>Make sure that you run this command in the correct place:</p>
+            <ul>
+                <li>
+                    <p><b>Windows:</b> Run the command in <b>Powershell</b>. Do not use WSL.</p>
+                </li>
+                <li>
+                    <p><b>Linux and macOS:</b> Run the command in your terminal. Before running the command, close any other connections inside that terminal.</p>
+                </li>
+            </ul>
+            <div class="code-container">
+                <button class="copy-button" onclick="copyToClipboard('code-remote')">Copy</button>
+                <code id="code-remote">code --remote ssh-remote+rconsole@<script>document.write(domain);</script>:<script>document.write(port);</script> /home/rconsole/labs</code>
+            </div>
+            <p>After VSCode opens, choose Linux as the destination operating system.</p>
+            <p>You wil also need to input your password: <b><script>document.write(pass);</script></b></p>
+        </li>
+        <li>
+            <p>If you are already logged in to Codeium in VSCode with your personal Codeium account, please log out. You might need to reload VSCode after logging out. You can do that with selecting <b>Developer: Reload Window</b> from the <b>Command Palette (Ctrl+Shift+P)</b></p>
+            <img src="img/signout.png" alt="Sign out" width="100%" height="100%">
+        </li>
+        <li>
+            <p>Log in to Codeium in VSCode, but do not open the link automatically. Copy the link, and open it in an incognito window. This step is necessary if you have a personal Codeium account that your browser remembered.</p>
+            <img src="img/login1.png" alt="Login" width="50%" height="50%">
+            <img src="img/login2.png" alt="Login" width="100%" height="100%">
+        </li>
+        <li>
+            <p>Paste the URL in a new incognito window and enter the following credentials on the Codeium page:</p>
+            <ul>
+                <li><b>Email:</b> <script>document.write(codeium_email);</script></li>
+                <li><b>Password:</b> <script>document.write(codeium_pass);</script></li>
+            </ul>
+            <img src="img/auth.png" alt="Authentication" width="100%" height="100%">
+            <img src="img/open.jpg" alt="Open VSCode" width="100%" height="100%">
+            <p>After you are done with these steps, the environment and Codeium are set up. If you are not logged in, you can click on the Reload button.</p>
+            <p><b>Please carefully read the README file to learn about the structure of the environment. An important note is that you need to open only the folder with the name of the current modules number when doing the lab exercises. There are links for that in the README file.</b></p>
+        </li>
+
+    <h2 id="lab">2. Remote Lab Environment (Guacamole)</h2>
+    <p>This section shows you how to access our Remote Lab Environment (Guacamole).</p>
+    <ol>
+        <li>
+            <p>Go to the <a href="https://rlab-eu.componentsoft.io/">Remote Lab login page</a> and enter your credentials:</p>
+            <ul>
+                <li><b>Username:</b> <script>document.write(guacamole_name);</script></li>
+                <li><b>Password:</b> <script>document.write(pass);</script></li>
+            </ul>
+        </li>
+        <img src="img/guacamole_login.png" alt="Guacamole login">
+        <li>
+            <p>Open the <b>tunnel</b> and <b>lab_machine</b> terminals. The <b>tunnel</b> enables you to check your work during the labs in the virtual environents browser. The <b>lab_machine</b> will be your terminal that you can use.</p>
+        </li>
+        <img src="img/terminal.png" alt="Terminals">
+        <li>
+            <p>Open VSCode with the following command in the <b>lab_machine</b> terminal:</p>
+            <div class="code-container">
+                <button class="copy-button" onclick="copyToClipboard()">Copy</button>
+                <code id="code-block">code labs</code>
+            </div>
+        </li>
+        <li>You are now logged in to Codeium, and your environment is being set up. You should see a README file pop up in VSCode.</li>
+    </ol>
+    <p><b>Please carefully read the README file to learn about the structure of the environment. An important note is that you need to open only the folder with the name of the current modules number when doing the lab exercises. There are links for that in the README file.</b></p>
+
+    <h2>Troubleshooting</h2>
+    <ul>
+        <li>
+            <p><b>Codeium not setting up correctly:</b> You probably set the <b>Codeium: Index storage path</b> in your VSCode settings. You will need to delete this and reload the connection.</p>
+        </li>
+        <li>
+            <p><b>Testing icon is missing from Activity Bar:</b> You need to enable or install the <b>Python extension</b> in VSCode.</p>
+        </li>
+        <li>
+            <p><b>Opening VSCode from the terminal throws an error:</b> A common mistake is running the command from WSL. You need to run the command on your own machine. If you are on Windows, you will need to run it in Powershell.</p>
+        </li>
+        <li>
+            <p><b>Autocomplete does not work:</b> You probably have GitLens (or some other extension) installed, that overlaps with Autocomplete. You need to disable such extensions.</p>
+        </li>
+    </ul>
+
+</body>
+</html>
