@@ -53,11 +53,19 @@
                 return acc;
             }, {});
 
+            // FIXME: This should not be needed
+            function hotfix(str) {
+                const postfix = "%20}}";
+                if (str.endsWith(postfix)) {
+                    return str.slice(0, -postfix.length);
+                }
+                return str;
+            }
+
             const port = paramsDict["port"]
-            const domain = paramsDict["domain"]
+            const domain = hotfix(paramsDict["domain"])
             const pass = paramsDict["pass"]
 
-            
             if (pass) {
                 document.getElementById('passwordField').innerText = pass;
             } else {
