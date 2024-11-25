@@ -42,10 +42,21 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            let addr = new URL(window.location.href);
-            let pass = addr.searchParams.get("pass");
-            let port = addr.searchParams.get("port");
-            let domain = addr.searchParams.get("domain");
+            const params = window.location.search;
+            const paramsDict = params.slice(1).split("&").reduce((acc, curr) => {
+                // FIXME: We want to allow non url encoded '=' characters in the url
+                // let [key, value] = curr.split("=");
+                const index = curr.indexOf("=");
+                const key = curr.slice(0, index);
+                const value = curr.slice(index + 1);
+                acc[key] = value;
+                return acc;
+            }, {});
+
+            const port = paramsDict["port"]
+            const domain = paramsDict["domain"]
+            const pass = paramsDict["pass"]
+
             
             if (pass) {
                 document.getElementById('passwordField').innerText = pass;
