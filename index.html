@@ -9,40 +9,17 @@
 </head>
 
 <body>
-    <script>
-        let addr = new URL(window.location.href);
-        let port = addr.searchParams.get("port") ?? "&lt;PORT&gt;";
-        let domain = addr.searchParams.get("domain") ?? "&lt;DOMAIN&gt;";
-        let guacamole_name = addr.searchParams.get("guacamole_name") ?? "&lt;REMOTE LAB USERNAME&gt;";
-        let pass = addr.searchParams.get("pass") ?? "&lt;PASSWORD&gt;";
-
-
-        function copyToClipboard(elementID) {
-            const code = document.getElementById(elementID).innerText;
-            navigator.clipboard.writeText(code);
-        }
-    </script>
-
     <h1>AI-434 Environment Guide</h1>
     <p>This tutorial will show you how to set up your environment and access our labfiles. You have two options to use our environment:</p>
-    <ul>
-        <li>
-            <p><a href="#jupyter">JupyterLab (Recommended)</a>: You can access our environment through JupyterLab. You can find the link to your JupyterLab environment in the email containing the lab environment details.</p>
-        </li>
-        <li>
-            <p><a href="#lab">Remote Lab Environment (Guacamole)</a>: You can also use the Guacamole interface. You are working on the same VM as the SSH option, but through a web interface.</p>
-        </li>
-    </ul>
     
-    <h2 id="jupyter">1. JupyterLab</h2>
+    <h2 id="jupyter">JupyterLab</h2>
     <p>This section shows you how to access our JupyterLab environment.</p>
-
     <ol>
         <li>
-            <p>Find the link in the email about the environment to your JupyterLab.</p>
+            <p>Access your JupyterLab environment: <a id="jupyterLink"></a></p>
         </li>
         <li>
-            <p>Input your password: <b><script>document.write(pass);</script></b></p>
+            <p>Input your password: <b id="passwordField"></b></p>
         </li>
         <li>
             <p>You can find all of the files once you have logged in. You will have a <b>solved</b> version for each modules lab.</p>
@@ -63,24 +40,28 @@
         </p>
     </ol>
 
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let addr = new URL(window.location.href);
+            let pass = addr.searchParams.get("pass");
+            let port = addr.searchParams.get("port");
+            let domain = addr.searchParams.get("domain");
+            
+            if (pass) {
+                document.getElementById('passwordField').innerText = pass;
+            } else {
+                document.getElementById('passwordField').innerText = "You can find your password in the email.";
+            }
 
-    <h2 id="lab">2. Remote Lab Environment (Guacamole)</h2>
-    <p>This section shows you how to access our Remote Lab Environment (Guacamole).</p>
-    <ol>
-        <li>
-            <p>Go to the <a href="https://rlab-eu.componentsoft.io/">Remote Lab login page</a> and enter your credentials:</p>
-            <ul>
-                <li><b>Username:</b> <script>document.write(guacamole_name);</script></li>
-                <li><b>Password:</b> <script>document.write(pass);</script></li>
-            </ul>
-        </li>
-        <img src="img/guacamole_login.png" alt="Guacamole login">
-        <li>
-            <p>Open the <b>tunnel</b> and <b>lab_machine</b> terminals. The <b>lab_machine</b> will be your terminal that you can use.</p>
-        </li>
-        <img src="img/terminal.png" alt="Terminals">
-    </ol>
+            if (port && domain) {
+                let jupyter_path = `https://${domain}/${port}`;
+                document.getElementById('jupyterLink').href = jupyter_path;
+                document.getElementById('jupyterLink').innerText = 'Link to Jupyter';
+            } else {
+                document.getElementById('jupyterLink').innerText = 'You can find the URL in your email.';
+            }
+        });
+    </script>
 
 </body>
 </html>
